@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "htmx-fastapi"
+version = "0.1.0"
+requires-python = ">=3.8"
+description = "Module Description"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ email = "preocts@preocts.com", name = "Preocts" }]
+maintainers = []
+keywords = []
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+# Dynamic dependencies are loaded from requirements*.txt files
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic.dependencies]
+file = ["requirements/requirements.txt"]
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements/requirements-dev.txt"] }
+test = { file = ["requirements/requirements-test.txt"] }
+
+# Alertative way to specify dependencies
+# dependencies = []
+
+# [project.optional-dependencies]
+# dev = []
+# test = []
+
+[project.urls]
+homepage = "https://github.com/Preocts/htmx-fastapi"
+# documentation = ""
+# repository = ""
+# changelog = ""
+
+# CLI scripts if needed
+# [project.scripts]
+# python-src-example = "htmx_fastapi.sample:main"
+
+# [tool.setuptools.packages.find]
+# where = ["src"]  # ["."] by default
+# include = ["*"]  # ["*"] by default
+# exclude = ["tests"]  # empty by default
+# namespaces = true  # true by default
+
+[tool.setuptools.package-data]
+"htmx_fastapi" = ["py.typed"]
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_incomplete_defs = false
+disallow_untyped_defs = false
+warn_unused_ignores = false
+
+[tool.coverage.run]
+branch = true
+source = ["tests"]
+source_pkgs = ["htmx_fastapi"]
+
+[tool.coverage.paths]
+source = ["src/", "*/site-packages"]
+test = ["tests/", "*/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "\\.\\.\\.",
+    "if TYPE_CHECKING:",
+]
