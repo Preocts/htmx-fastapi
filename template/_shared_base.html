@@ -6,9 +6,10 @@
         <link rel="stylesheet" href="static/css/base.css" />
         {% block xtra_css %}{% endblock %}
     </head>
+    <script src="static/js/htmx.min.js"></script>
     <body>
         <div id="header">
-            <h1>This is the shared base</h1>
+            <p>This is the shared base</p>
         </div>
         <div id="content">{% block content %}{% endblock %}</div>
         <div id="footer">
@@ -16,3 +17,4 @@
         </div>
     </body>
 </html>
+"
