@@ -8,7 +8,7 @@ import nox
 # Control factors for finding pieces of the module
 MODULE_NAME = "htmx_fastapi"
 TESTS_PATH = "tests"
-COVERAGE_FAIL_UNDER = 0
+COVERAGE_FAIL_UNDER = 50
 REQUIREMENT_IN_FILES = [
     pathlib.Path("requirements/requirements.in"),
     pathlib.Path("requirements/requirements-dev.in"),
