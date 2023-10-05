@@ -29,8 +29,12 @@ class TransactionStore:
 
     def add(self, transaction: Transaction) -> None:
         """Add a transaction to the database."""
+        self.add_batch([transaction])
+
+    def add_batch(self, transactions: list[Transaction]) -> None:
+        """Add a batch of transactions to the database."""
         with closing(self.database.cursor()) as cursor:
-            cursor.execute(
+            cursor.executemany(
                 """
                 INSERT INTO transactions (
                     timestamp,
@@ -38,7 +42,10 @@ class TransactionStore:
                     amount
                 )
                 VALUES (?, ?, ?)""",
-                (transaction.timestamp, transaction.description, transaction.amount),
+                [
+                    (transaction.timestamp, transaction.description, transaction.amount)
+                    for transaction in transactions
+                ],
             )
             self.database.commit()
 
