@@ -1,6 +1,12 @@
 {% extends "_shared_base.html" %} {% block content %}
 <div class="container">
-  <h1>Click game:</h1>
-  {% include "partial/increment.html" with context %}
+  <div
+    id="transaction-table"
+    hx-get="/transactions"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+  >
+    {% include "partial/transactions.html" with context %}
+  </div>
 </div>
 {% endblock %}
