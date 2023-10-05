@@ -81,3 +81,12 @@ def test_delete_row(mock_store: TransactionStore) -> None:
     row = cursor.fetchone()
 
     assert row is None
+
+
+def test_get_by_id(mock_store: TransactionStore) -> None:
+    transaction = mock_store.get_by_id(1)
+
+    assert transaction.tid == 1
+    assert transaction.amount == 100
+    assert transaction.description == "Mock 1"
+    assert transaction.timestamp == 1234567890

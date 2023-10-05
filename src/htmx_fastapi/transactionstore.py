@@ -81,6 +81,29 @@ class TransactionStore:
                 for row in cursor.fetchall()
             ]
 
+    def get_by_id(self, transaction_id: int) -> Transaction:
+        """Get a transaction by its ID."""
+        with closing(self.database.cursor()) as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    tid,
+                    amount,
+                    description,
+                    timestamp
+                FROM transactions
+                WHERE tid = ?
+                """,
+                (transaction_id,),
+            )
+            row = cursor.fetchone()
+            return Transaction(
+                tid=row[0],
+                amount=row[1],
+                description=row[2],
+                timestamp=row[3],
+            )
+
     def update(self, transaction: Transaction) -> None:
         """Update a transaction in the database."""
         with closing(self.database.cursor()) as cursor:
