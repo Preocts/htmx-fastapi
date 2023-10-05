@@ -1,3 +1,7 @@
+# Project files
+*.db
+
+# Standard ignore files
 temp_*
 .env
 venv/
