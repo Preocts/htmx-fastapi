@@ -4,14 +4,26 @@
       <th>Date</th>
       <th>Description</th>
       <th>Amount</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody hx-target="closest tr" hx-swap="outerHTML">
     {% if transactions %} {% for transaction in transactions %}
     <tr>
       <td>{{ transaction.timestamp | readable_timestamp }}</td>
       <td>{{ transaction.description }}</td>
       <td>{{ transaction.amount }}</td>
+      <td>
+        <button type="submit" hx-get="/transaction/{{ transaction.tid }}/edit">
+          Edit
+        </button>
+      </td>
+      <td>
+        <button type="submit" hx-delete="/transaction/{{ transaction.tid }}">
+          Delete
+        </button>
+      </td>
     </tr>
     {% endfor %} {% else %}
     <tr>
