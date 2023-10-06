@@ -11,7 +11,7 @@ def _readable_timestamp(timestamp: int, tzoffset: int = 0) -> str:
     _tzoffset = datetime.timedelta(hours=tzoffset)
     dt = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
     dt = dt + _tzoffset
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
+    return dt.strftime("%Y-%m-%d")
 
 
 def apply_filters(template: Jinja2Templates) -> None:
