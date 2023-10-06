@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import decimal
 import sqlite3
 from typing import Annotated
 
@@ -91,7 +92,7 @@ def update_transaction(
     transaction_id: int,
     date_time: Annotated[str, fastapi.Form()],
     description: Annotated[str, fastapi.Form()],
-    amount: Annotated[int, fastapi.Form()],
+    amount: Annotated[str, fastapi.Form()],
 ) -> fastapi.Response:
     """
     Update a single transaction.
@@ -101,7 +102,12 @@ def update_transaction(
     except ValueError:
         timestamp = int(datetime.datetime.now(tz=datetime.timezone.utc).timestamp())
 
-    transaction = Transaction(transaction_id, amount, description, timestamp)
+    try:
+        _amount = int(decimal.Decimal(amount) * 100)
+    except ValueError:
+        _amount = 0
+
+    transaction = Transaction(transaction_id, _amount, description, timestamp)
 
     transaction_store.update(transaction)
 
