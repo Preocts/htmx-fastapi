@@ -1,0 +1,15 @@
+<tr>
+  <td>{{ transaction.timestamp | readable_timestamp }}</td>
+  <td>{{ transaction.description }}</td>
+  <td>{{ transaction.amount }}</td>
+  <td>
+    <button type="submit" hx-get="/transaction/{{ transaction.tid }}/edit">
+      Edit
+    </button>
+  </td>
+  <td>
+    <button type="submit" hx-delete="/transaction/{{ transaction.tid }}">
+      Delete
+    </button>
+  </td>
+</tr>
