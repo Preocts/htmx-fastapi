@@ -8,7 +8,7 @@
     <input
       type="date"
       name="date_time"
-      value="{{ transaction.timestamp | readable_timestamp }}"
+      value="{{ transaction.timestamp | to_date }}"
     />
   </td>
   <td>
@@ -19,7 +19,11 @@
     />
   </td>
   <td>
-    <input type="number" name="amount" value="{{ transaction.amount }}" />
+    <input
+      type="text"
+      name="amount"
+      value="{{ transaction.amount | to_dollars}}"
+    />
   </td>
   <td>
     <button type="cancel" hx-get="/transaction/{{ transaction.tid }}">
