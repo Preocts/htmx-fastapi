@@ -1,3 +1,4 @@
+{% import 'partial/transaction_row.html' as rows %}
 <table id="transaction-table">
   <thead>
     <tr>
@@ -9,26 +10,8 @@
     </tr>
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
-    {% if transactions %} {% for transaction in transactions %}
-    <tr>
-      <td>{{ transaction.timestamp | readable_timestamp }}</td>
-      <td>{{ transaction.description }}</td>
-      <td>{{ transaction.amount }}</td>
-      <td>
-        <button type="submit" hx-get="/transaction/{{ transaction.tid }}/edit">
-          Edit
-        </button>
-      </td>
-      <td>
-        <button type="submit" hx-delete="/transaction/{{ transaction.tid }}">
-          Delete
-        </button>
-      </td>
-    </tr>
-    {% endfor %} {% else %}
-    <tr>
-      <td colspan="3">No transactions found.</td>
-    </tr>
-    {% endif %}
+    {% if transactions %} {% for transaction in transactions %} {{
+    rows.transaction_row(transaction.tid, transaction.timestamp,
+    transaction.description, transaction.amount) }} {% endfor %} {% endif %}
   </tbody>
 </table>

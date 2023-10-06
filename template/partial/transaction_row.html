@@ -1,15 +1,15 @@
+{% macro transaction_row(tid, timestamp, description, amount) -%}
 <tr>
-  <td>{{ transaction.timestamp | readable_timestamp }}</td>
-  <td>{{ transaction.description }}</td>
-  <td>{{ transaction.amount }}</td>
+  <td>{{ timestamp | to_date }}</td>
+  <td>{{ description }}</td>
+  <td>{{ amount | to_dollars }}</td>
   <td>
-    <button type="submit" hx-get="/transaction/{{ transaction.tid }}/edit">
-      Edit
-    </button>
+    <button type="submit" hx-get="/transaction/{{ tid }}/edit">Edit</button>
   </td>
   <td>
-    <button type="submit" hx-delete="/transaction/{{ transaction.tid }}">
-      Delete
-    </button>
+    <button type="submit" hx-delete="/transaction/{{ tid }}">Delete</button>
   </td>
 </tr>
+{%- endmacro %} {# Render a single transaction if one is provided #} {% if
+transaction %} {{ transaction_row(transaction.tid, transaction.timestamp,
+transaction.description, transaction.amount) }} {% endif %}
