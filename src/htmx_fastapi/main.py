@@ -52,7 +52,7 @@ def transactions(
         "transactions": transaction_store.get(since, until),
     }
 
-    return template.TemplateResponse("partial/transactions.html", context)
+    return template.TemplateResponse("transaction/index.html", context)
 
 
 @app.get("/transaction/{transaction_id}")
@@ -68,7 +68,7 @@ def transaction(
         "transaction": transaction_store.get_by_id(transaction_id),
     }
 
-    return template.TemplateResponse("partial/transaction_row.html", context)
+    return template.TemplateResponse("transaction/partial/row.html", context)
 
 
 @app.get("/transaction/{transaction_id}/edit")
@@ -83,7 +83,7 @@ def edit_transaction(request: fastapi.Request, transaction_id: int) -> fastapi.R
         "transaction": row,
     }
 
-    return template.TemplateResponse("partial/transaction_form.html", context)
+    return template.TemplateResponse("transaction/partial/row_edit.html", context)
 
 
 @app.put("/transaction/{transaction_id}")
@@ -116,7 +116,7 @@ def update_transaction(
         "transaction": transaction,
     }
 
-    return template.TemplateResponse("partial/transaction_row.html", context)
+    return template.TemplateResponse("transaction/partial/row.html", context)
 
 
 @app.delete("/transaction/{transaction_id}")
@@ -155,4 +155,4 @@ def delete_transaction(
 #         "transaction": transaction,
 #     }
 
-#     return template.TemplateResponse("partial/transaction_row.html", context)
+#     return template.TemplateResponse("transaction/partial/row.html", context)
