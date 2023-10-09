@@ -32,8 +32,9 @@ def index(request: fastapi.Request) -> fastapi.Response:
 @app.get("/transactions")
 def transactions(
     request: fastapi.Request,
-    since: int | None = None,
-    until: int | None = None,
+    date_since: str | None = None,
+    date_until: str | None = None,
+    default_range: int = 90,
 ) -> fastapi.Response:
     """
     Return partial HTML for transactions between `since` and `until`.
@@ -42,14 +43,21 @@ def transactions(
     if `until` is None, default now
     """
     now = datetime.datetime.now(tz=datetime.timezone.utc)
-    if not since:
-        since = int((now - datetime.timedelta(days=365)).timestamp())
-    if not until:
-        until = int(now.timestamp())
+    if date_since:
+        _since = int(datetime.datetime.strptime(date_since, "%Y-%m-%d").timestamp())
+    else:
+        _since = int((now - datetime.timedelta(days=default_range)).timestamp())
+
+    if date_until:
+        _until = int(datetime.datetime.strptime(date_until, "%Y-%m-%d").timestamp())
+    else:
+        _until = int(now.timestamp())
 
     context = {
         "request": request,
-        "transactions": transaction_store.get(since, until),
+        "transactions": transaction_store.get(_since, _until),
+        "date_since": _since,
+        "date_until": _until,
     }
 
     return template.TemplateResponse("transaction/index.html", context)

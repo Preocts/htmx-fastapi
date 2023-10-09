@@ -1,0 +1,22 @@
+<div id="date_range">
+  <label for="date_since">Since</label>
+  <input
+    type="date"
+    name="date_since"
+    value="{{ date_since | to_date(dayoffset=90) }}"
+    hx-get="/transactions"
+    hx-target="#transactionTable"
+    hx-trigger="change"
+    hx-include="closest div"
+  />
+  <label for="date_until">Until</label>
+  <input
+    type="date"
+    name="date_until"
+    value="{{ date_until | to_date(dayoffset=0) }}"
+    hx-get="/transactions"
+    hx-target="#transactionTable"
+    hx-trigger="change"
+    hx-include="closest div"
+  />
+</div>
