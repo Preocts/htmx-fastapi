@@ -1,0 +1,16 @@
+<div id="dateRange">
+  <label for="dateSince">Since</label>
+  <input
+    id="dateSince"
+    type="date"
+    name="dateSince"
+    value="{{ dateSince | to_date(dayoffset=90) }}"
+  />
+  <label for="dateUntil">Until</label>
+  <input
+    id="dateUntil"
+    type="date"
+    name="dateUntil"
+    value="{{ dateUntil | to_date(dayoffset=0) }}"
+  />
+</div>
