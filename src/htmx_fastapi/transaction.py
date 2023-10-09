@@ -5,9 +5,9 @@ import dataclasses
 import datetime
 
 
-def _current_timestamp() -> int:
-    """Return the current timestamp."""
-    return int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+def _current_date() -> str:
+    """Return the current date as YYYY-MM-DD."""
+    return datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -17,4 +17,4 @@ class Transaction:
     tid: int
     amount: int
     description: str
-    timestamp: int = _current_timestamp()
+    date: str = _current_date()
