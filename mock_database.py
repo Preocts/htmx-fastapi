@@ -21,23 +21,20 @@ def _split_words(words: str) -> list[str]:
     return words.split(" ")
 
 
-def _generate_transactions(count: int) -> list[Transaction]:
+def _generate_transactions(dayscount: int) -> list[Transaction]:
     """Generate mock transactions."""
-    date_start = datetime.datetime.now() - datetime.timedelta(days=NUMBER_OF_DAYS)
-    seconds_step = 86400 // TRANSACTIONS_PER_DAY
+    date_start = datetime.datetime.now() - datetime.timedelta(days=dayscount)
 
     words = _split_words(WORDS)
     transactions = []
 
-    for idx in range(count):
-        for seconds in range(0, 86400, seconds_step):
-            timestamp = int(date_start.timestamp() + seconds)
-
+    for day in range(dayscount):
+        for _ in range(TRANSACTIONS_PER_DAY):
             transaction = Transaction(
-                tid=idx,
+                tid=0,
                 amount=random.randint(100, 10000),
                 description=" ".join(random.choices(words, k=5)),
-                timestamp=timestamp,
+                date=date_start.strftime("%Y-%m-%d"),
             )
             transactions.append(transaction)
 

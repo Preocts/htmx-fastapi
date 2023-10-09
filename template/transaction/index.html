@@ -12,7 +12,7 @@
   </thead>
   <tbody hx-target="closest tr" hx-swap="outerHTML">
     {% if transactions %} {% for transaction in transactions %} {{
-    rows.transaction_row(transaction.tid, transaction.timestamp,
+    rows.transaction_row(transaction.tid, transaction.date,
     transaction.description, transaction.amount) }} {% endfor %} {% endif %}
   </tbody>
 </table>

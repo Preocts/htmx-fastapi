@@ -21,7 +21,7 @@ class TransactionStore:
         self.database.execute(
             """CREATE TABLE IF NOT EXISTS transactions (
                 tid INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp INTEGER,
+                date TEXT,
                 description TEXT,
                 amount INTEGER
             )"""
@@ -37,25 +37,25 @@ class TransactionStore:
             cursor.executemany(
                 """
                 INSERT INTO transactions (
-                    timestamp,
+                    date,
                     description,
                     amount
                 )
                 VALUES (?, ?, ?)""",
                 [
-                    (transaction.timestamp, transaction.description, transaction.amount)
+                    (transaction.date, transaction.description, transaction.amount)
                     for transaction in transactions
                 ],
             )
             self.database.commit()
 
-    def get(self, since: int, until: int) -> list[Transaction]:
+    def get(self, date_since: str, date_until: str) -> list[Transaction]:
         """
         Get transactions in the database.
 
         Args:
-            since: The earliest timestamp to return.
-            until: The latest timestamp to return.
+            date_since: The start date as a string in YYYY-MM-DD format
+            date_until: The end date as a string in YYYY-MM-DD format
         """
         with closing(self.database.cursor()) as cursor:
             cursor.execute(
@@ -64,19 +64,19 @@ class TransactionStore:
                     tid,
                     amount,
                     description,
-                    timestamp
+                    date
                 FROM transactions
-                WHERE timestamp >= ? AND timestamp <= ?
-                ORDER BY timestamp DESC
+                WHERE date >= ? AND date <= ?
+                ORDER BY date DESC
                 """,
-                (since, until),
+                (date_since, date_until),
             )
             return [
                 Transaction(
                     tid=row[0],
                     amount=row[1],
                     description=row[2],
-                    timestamp=row[3],
+                    date=row[3],
                 )
                 for row in cursor.fetchall()
             ]
@@ -90,7 +90,7 @@ class TransactionStore:
                     tid,
                     amount,
                     description,
-                    timestamp
+                    date
                 FROM transactions
                 WHERE tid = ?
                 """,
@@ -101,7 +101,7 @@ class TransactionStore:
                 tid=row[0],
                 amount=row[1],
                 description=row[2],
-                timestamp=row[3],
+                date=row[3],
             )
 
     def update(self, transaction: Transaction) -> None:
@@ -111,13 +111,13 @@ class TransactionStore:
                 """
                 UPDATE transactions
                 SET
-                    timestamp = ?,
+                    date = ?,
                     description = ?,
                     amount = ?
                 WHERE tid = ?
                 """,
                 (
-                    transaction.timestamp,
+                    transaction.date,
                     transaction.description,
                     transaction.amount,
                     transaction.tid,

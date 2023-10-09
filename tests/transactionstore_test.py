@@ -8,9 +8,9 @@ from htmx_fastapi.transaction import Transaction
 from htmx_fastapi.transactionstore import TransactionStore
 
 MOCK_TRANSACTIONS = [
-    (100, "Mock 1", 1234567890),
-    (100, "Mock 2", 1234567892),
-    (100, "Mock 3", 1234567894),
+    (100, "Mock 1", "2023-10-01"),
+    (100, "Mock 2", "2023-10-02"),
+    (100, "Mock 3", "2023-10-03"),
 ]
 
 
@@ -24,7 +24,7 @@ def mock_store() -> TransactionStore:
         INSERT INTO transactions (
             amount,
             description,
-            timestamp
+            date
         )
         VALUES (?, ?, ?)""",
         MOCK_TRANSACTIONS,
@@ -37,7 +37,7 @@ def test_add_row(mock_store: TransactionStore) -> None:
         tid=0,
         amount=100,
         description="Test",
-        timestamp=1234567890,
+        date="2023-10-01",
     )
 
     mock_store.add(transaction)
@@ -45,12 +45,12 @@ def test_add_row(mock_store: TransactionStore) -> None:
     cursor = mock_store.database.execute("SELECT * FROM transactions WHERE tid = 4")
     row = cursor.fetchone()
 
-    assert row == (4, 1234567890, "Test", 100)
+    assert row == (4, "2023-10-01", "Test", 100)
 
 
 def test_get_rows(mock_store: TransactionStore) -> None:
-    full_result = mock_store.get(1234567890, 1234567894)
-    partial_result = mock_store.get(1234567890, 1234567892)
+    full_result = mock_store.get("2023-10-01", "2023-10-03")
+    partial_result = mock_store.get("2023-10-01", "2023-10-02")
 
     assert len(full_result) == len(MOCK_TRANSACTIONS)
     assert len(partial_result) == len(MOCK_TRANSACTIONS) - 1
@@ -61,7 +61,7 @@ def test_update_row(mock_store: TransactionStore) -> None:
         tid=1,
         amount=42069,
         description="Hello there",
-        timestamp=1234567900,
+        date="2023-10-01",
     )
 
     mock_store.update(transaction)
@@ -89,4 +89,4 @@ def test_get_by_id(mock_store: TransactionStore) -> None:
     assert transaction.tid == 1
     assert transaction.amount == 100
     assert transaction.description == "Mock 1"
-    assert transaction.timestamp == 1234567890
+    assert transaction.date == "2023-10-01"
