@@ -5,11 +5,7 @@
   hx-get="/transaction/{{ transaction.tid }}"
 >
   <td>
-    <input
-      type="date"
-      name="date_time"
-      value="{{ transaction.timestamp | to_date }}"
-    />
+    <input type="date" name="date_time" value="{{ transaction.date }}" />
   </td>
   <td>
     <input

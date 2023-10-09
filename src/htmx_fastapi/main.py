@@ -43,21 +43,17 @@ def transactions(
     if `until` is None, default now
     """
     now = datetime.datetime.now(tz=datetime.timezone.utc)
-    if date_since:
-        _since = int(datetime.datetime.strptime(date_since, "%Y-%m-%d").timestamp())
-    else:
-        _since = int((now - datetime.timedelta(days=default_range)).timestamp())
+    if not date_since:
+        date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
 
-    if date_until:
-        _until = int(datetime.datetime.strptime(date_until, "%Y-%m-%d").timestamp())
-    else:
-        _until = int(now.timestamp())
+    if not date_until:
+        date_until = now.strftime("%Y-%m-%d")
 
     context = {
         "request": request,
-        "transactions": transaction_store.get(_since, _until),
-        "date_since": _since,
-        "date_until": _until,
+        "transactions": transaction_store.get(date_since, date_until),
+        "date_since": date_since,
+        "date_until": date_until,
     }
 
     return template.TemplateResponse("transaction/index.html", context)
@@ -105,17 +101,15 @@ def update_transaction(
     """
     Update a single transaction.
     """
-    try:
-        timestamp = int(datetime.datetime.strptime(date_time, "%Y-%m-%d").timestamp())
-    except ValueError:
-        timestamp = int(datetime.datetime.now(tz=datetime.timezone.utc).timestamp())
+    if not date_time:
+        date_time = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d")
 
     try:
         _amount = int(decimal.Decimal(amount) * 100)
     except ValueError:
         _amount = 0
 
-    transaction = Transaction(transaction_id, _amount, description, timestamp)
+    transaction = Transaction(transaction_id, _amount, description, date_time)
 
     transaction_store.update(transaction)
 
