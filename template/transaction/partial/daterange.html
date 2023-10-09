@@ -1,22 +1,22 @@
-<div id="dateRange">
-  <label for="dateSince">Since</label>
+<div id="date_range">
+  <label for="date_since">Since</label>
   <input
-    id="dateSince"
     type="date"
-    name="dateSince"
-    value="{{ dateSince | to_date(dayoffset=90) }}"
+    name="date_since"
+    value="{{ date_since | to_date(dayoffset=90) }}"
     hx-get="/transactions"
     hx-target="#transactionTable"
     hx-trigger="change"
+    hx-include="closest div"
   />
-  <label for="dateUntil">Until</label>
+  <label for="date_until">Until</label>
   <input
-    id="dateUntil"
     type="date"
-    name="dateUntil"
-    value="{{ dateUntil | to_date(dayoffset=0) }}"
+    name="date_until"
+    value="{{ date_until | to_date(dayoffset=0) }}"
     hx-get="/transactions"
     hx-target="#transactionTable"
     hx-trigger="change"
+    hx-include="closest div"
   />
 </div>
