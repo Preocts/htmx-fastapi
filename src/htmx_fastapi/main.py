@@ -35,7 +35,15 @@ def favicon() -> fastapi.Response:
 
 
 @app.get("/transactions")
-def transactions(
+def transactions(request: fastapi.Request) -> fastapi.Response:
+    """Page view for transactions."""
+    context = {"request": request}
+
+    return template.TemplateResponse("transaction/index.html", context)
+
+
+@app.get("/transaction/table")
+def transaction_table(
     request: fastapi.Request,
     date_since: str | None = None,
     date_until: str | None = None,
@@ -44,7 +52,7 @@ def transactions(
     """
     Return partial HTML for transactions between `since` and `until`.
 
-    if `since` is None, default one year ago
+    if `since` is None, default 90 days ago
     if `until` is None, default now
     """
     now = datetime.datetime.now(tz=datetime.timezone.utc)
@@ -61,7 +69,7 @@ def transactions(
         "date_until": date_until,
     }
 
-    return template.TemplateResponse("transaction/index.html", context)
+    return template.TemplateResponse("transaction/partial/table.html", context)
 
 
 @app.get("/transaction/{transaction_id}")

@@ -1,12 +1,7 @@
-{% extends "_shared_base.html" %} {% block content %}
+{% extends "_shared_base.html" %}
+{% block content %}
+<h1>Example Main Index</h1>
 <div class="container">
-  <div
-    id="transactionTable"
-    hx-get="/transactions"
-    hx-trigger="load"
-    hx-swap="innerHTML"
-  >
-    {% include "transaction/index.html" with context %}
-  </div>
+  <a href="/transactions">Transactions Page</a>
 </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% macro transaction_row(tid, date, description, amount) -%}
 <tr>
   <td>{{ date }}</td>
-  <td>{{ description }}</td>
+  <td hx-get="transaction/{{ tid }}/edit" hx-trigger="click">{{ description }}</td>
   <td>{{ amount | to_dollars }}</td>
   <td>
     <button type="submit" hx-get="/transaction/{{ tid }}/edit">Edit</button>
