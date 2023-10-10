@@ -29,6 +29,11 @@ def index(request: fastapi.Request) -> fastapi.Response:
     return template.TemplateResponse("index.html", {"request": request})
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon() -> fastapi.Response:
+    return fastapi.responses.FileResponse("static/img/favicon.ico")
+
+
 @app.get("/transactions")
 def transactions(
     request: fastapi.Request,
