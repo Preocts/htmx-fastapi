@@ -1,18 +1,8 @@
-{% import 'transaction/partial/row.html' as rows %} {% include
-'transaction/partial/daterange.html' with context %}
-<table id="transaction-table">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Description</th>
-      <th>Amount</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody hx-target="closest tr" hx-swap="outerHTML">
-    {% if transactions %} {% for transaction in transactions %} {{
-    rows.transaction_row(transaction.tid, transaction.date,
-    transaction.description, transaction.amount) }} {% endfor %} {% endif %}
-  </tbody>
-</table>
+{% extends "_shared_base.html" %}
+{% block content %}
+<h1>Transactions Example Page</h1>
+
+<div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML">
+  {% include 'transaction/partial/table.html' with context %}
+</div>
+{% endblock %}

@@ -4,8 +4,8 @@
     type="date"
     name="date_since"
     value="{{ date_since }}"
-    hx-get="/transactions"
-    hx-target="#transactionTable"
+    hx-get="/transaction/table"
+    hx-target="#transaction_table"
     hx-trigger="change"
     hx-include="closest div"
   />
@@ -14,8 +14,8 @@
     type="date"
     name="date_until"
     value="{{ date_until }}"
-    hx-get="/transactions"
-    hx-target="#transactionTable"
+    hx-get="/transaction/table"
+    hx-target="#transaction_table"
     hx-trigger="change"
     hx-include="closest div"
   />

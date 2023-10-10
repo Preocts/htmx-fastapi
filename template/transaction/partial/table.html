@@ -1,0 +1,21 @@
+{% import 'transaction/partial/row.html' as rows %}
+{% include 'transaction/partial/daterange.html' with context %}
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+    <tbody id="transaction_rows" hx-target="closest tr" hx-swap="outerHTML">
+      {% if transactions %}
+        {% for transaction in transactions %}
+          {{ rows.transaction_row(transaction.tid, transaction.date, transaction.description, transaction.amount) }}
+        {% endfor %}
+      {% endif %}
+    </tbody>
+  </thead>
+</table>
