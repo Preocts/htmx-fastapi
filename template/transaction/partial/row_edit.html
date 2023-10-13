@@ -1,35 +1,19 @@
 {# The trigger here allows us to cancel the edit from an outside element. #}
-<tr
-  hx-trigger="cancel"
-  class="editing"
-  hx-get="/transaction/{{ transaction.tid }}"
->
+<tr class="editing" hx-get="/transaction/{{ transaction.tid }}" hx-trigger="cancel" >
   <td>
     <input type="date" name="date_time" value="{{ transaction.date }}" />
   </td>
   <td>
-    <input
-      type="text"
-      name="description"
-      value="{{ transaction.description }}"
-    />
+    <input type="text" name="description" value="{{ transaction.description }}" />
   </td>
   <td>
-    <input
-      type="text"
-      name="amount"
-      value="{{ transaction.amount | to_dollars}}"
-    />
+    <input type="text" name="amount" value="{{ transaction.amount | to_dollars}}" />
   </td>
   <td>
     <button type="cancel" hx-get="/transaction/{{ transaction.tid }}">
       Cancel
     </button>
-    <button
-      type="submit"
-      hx-put="/transaction/{{ transaction.tid }}"
-      hx-include="closest tr"
-    >
+    <button type="submit" hx-put="/transaction/{{ transaction.tid }}" hx-include="closest tr">
       Save
     </button>
   </td>
