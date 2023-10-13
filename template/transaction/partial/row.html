@@ -10,6 +10,9 @@
     <button type="submit" hx-delete="/transaction/{{ tid }}">Delete</button>
   </td>
 </tr>
-{%- endmacro %} {# Render a single transaction if one is provided #} {% if
-transaction %} {{ transaction_row(transaction.tid, transaction.date,
-transaction.description, transaction.amount) }} {% endif %}
+{%- endmacro %}
+
+{# Render a single transaction if one is provided #}
+{% if transaction %}
+  {{ transaction_row(transaction.tid, transaction.date, transaction.description, transaction.amount) }}
+{% endif %}
