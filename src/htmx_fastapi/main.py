@@ -61,12 +61,14 @@ def transaction_table(
 
     if not date_until:
         date_until = now.strftime("%Y-%m-%d")
-
+    transactions = transaction_store.get(date_since, date_until)
     context = {
         "request": request,
-        "transactions": transaction_store.get(date_since, date_until),
+        "transactions": transactions,
         "date_since": date_since,
         "date_until": date_until,
+        "total_amount": transaction_store.get_total(date_since, date_until),
+        "total_count": len(transactions),
     }
 
     return template.TemplateResponse("transaction/partial/table.html", context)
