@@ -1,10 +1,10 @@
 {% extends "_shared_base.html" %}
 {% block content %}
 <h1>Transactions Example Page</h1>
-<div id="transaction_total" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/total">
+<div id="transaction_total" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/total" hx-include="#date_range">
   {% include 'transaction/partial/total.html' with context %}
 </div>
-<div id="transaction_count" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/count">
+<div id="transaction_count" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/count" hx-include="#date_range">
   {% include 'transaction/partial/rowcount.html' with context %}
 </div>
 <div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML">
