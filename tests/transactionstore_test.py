@@ -90,3 +90,15 @@ def test_get_by_id(mock_store: TransactionStore) -> None:
     assert transaction.amount == 100
     assert transaction.description == "Mock 1"
     assert transaction.date == "2023-10-01"
+
+
+def test_get_total_amount_all_mock_data(mock_store: TransactionStore) -> None:
+    total_amount = mock_store.get_total("2023-10-01", "2023-10-03")
+
+    assert total_amount == 300
+
+
+def test_get_total_amount_single_day(mock_store: TransactionStore) -> None:
+    total_amount = mock_store.get_total("2023-10-01", "2023-10-01")
+
+    assert total_amount == 100
