@@ -67,8 +67,13 @@ def transaction_table(
         "date_since": date_since,
         "date_until": date_until,
     }
+    headers = {"HX-Trigger": "tableUpdate"}
 
-    return template.TemplateResponse("transaction/partial/table.html", context)
+    return template.TemplateResponse(
+        name="transaction/partial/table.html",
+        context=context,
+        headers=headers,
+    )
 
 
 @app.get("/transaction/total")
