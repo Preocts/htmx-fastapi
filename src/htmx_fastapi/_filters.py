@@ -6,7 +6,10 @@ from fastapi.templating import Jinja2Templates
 
 def _to_dollars(amount: int) -> str:
     """Return a human-readable amount."""
-    return f"{amount / 100:.2f}"
+    if amount:
+        return f"{amount / 100:.2f}"
+    else:
+        return "0.00"
 
 
 def apply_filters(template: Jinja2Templates) -> None:

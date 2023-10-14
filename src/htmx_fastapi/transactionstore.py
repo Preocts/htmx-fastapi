@@ -81,6 +81,60 @@ class TransactionStore:
                 for row in cursor.fetchall()
             ]
 
+    def get_total(self, date_since: str, date_until: str) -> int:
+        """
+        Get the total amount of transactions in the database.
+
+        Args:
+            date_since: The start date as a string in YYYY-MM-DD format
+            date_until: The end date as a string in YYYY-MM-DD format
+        """
+        with closing(self.database.cursor()) as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    SUM(amount)
+                FROM transactions
+                WHERE date >= ? AND date <= ?
+                """,
+                (date_since, date_until),
+            )
+            return cursor.fetchone()[0]
+
+    def get_count(self, date_since: str, date_until: str) -> int:
+        """
+        Get the number of transactions in the database.
+
+        Args:
+            date_since: The start date as a string in YYYY-MM-DD format
+            date_until: The end date as a string in YYYY-MM-DD format
+        """
+        with closing(self.database.cursor()) as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    COUNT(amount)
+                FROM transactions
+                WHERE date >= ? AND date <= ?
+                """,
+                (date_since, date_until),
+            )
+            return cursor.fetchone()[0]
+
+    def get_count_all(self) -> int:
+        """
+        Get the number of transactions in the database.
+        """
+        with closing(self.database.cursor()) as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    COUNT(amount)
+                FROM transactions
+                """,
+            )
+            return cursor.fetchone()[0]
+
     def get_by_id(self, transaction_id: int) -> Transaction:
         """Get a transaction by its ID."""
         with closing(self.database.cursor()) as cursor:
