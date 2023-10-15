@@ -4,12 +4,10 @@
 
 {% include 'transaction/partial/daterange.html' with context %}
 
-<div id="transaction_total" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/total" hx-include="#date_range">
-  {% include 'transaction/partial/total.html' with context %}
-</div>
-<div id="transaction_count" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/count" hx-include="#date_range">
-  {% include 'transaction/partial/rowcount.html' with context %}
-</div>
+{% include 'transaction/partial/amounttotal.html' with context %}
+
+{% include 'transaction/partial/rowtotal.html' with context %}
+
 <div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML">
   {% include 'transaction/partial/table.html' with context %}
 </div>

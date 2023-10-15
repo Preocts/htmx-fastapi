@@ -86,15 +86,15 @@ def transaction_table(
     )
 
 
-@app.get("/transaction/total")
-def transaction_total(
+@app.get("/transaction/amounttotal")
+def amount_total(
     request: fastapi.Request,
     date_since: str | None = None,
     date_until: str | None = None,
     default_range: int = 90,
 ) -> fastapi.Response:
     """
-    Return partial HTML for transactions between `since` and `until`.
+    Return partial HTML total amount between `since` and `until`.
 
     if `since` is None, default 90 days ago
     if `until` is None, default now
@@ -110,10 +110,10 @@ def transaction_total(
         "total_amount": transaction_store.get_total(date_since, date_until),
     }
 
-    return template.TemplateResponse("transaction/partial/total.html", context)
+    return template.TemplateResponse("transaction/partial/amounttotal.html", context)
 
 
-@app.get("/transaction/count")
+@app.get("/transaction/rowtotal")
 def transaction_count(
     request: fastapi.Request,
     date_since: str | None = None,
@@ -121,7 +121,7 @@ def transaction_count(
     default_range: int = 90,
 ) -> fastapi.Response:
     """
-    Return partial HTML counting the transactions between `since` and `until`.
+    Return partial HTML total number of transactions between `since` and `until`.
 
     if `since` is None, default 90 days ago
     if `until` is None, default now
@@ -138,7 +138,7 @@ def transaction_count(
         "total_count": transaction_store.get_count_all(),
     }
 
-    return template.TemplateResponse("transaction/partial/rowcount.html", context)
+    return template.TemplateResponse("transaction/partial/rowtotal.html", context)
 
 
 @app.get("/transaction/{transaction_id}")
