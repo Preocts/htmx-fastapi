@@ -48,8 +48,13 @@ def transactions(request: fastapi.Request) -> fastapi.Response:
         "date_since": date_since,
         "date_until": date_until,
     }
+    new_url = f"/transactions?date_since={date_since}&date_until={date_until}"
+    headers = {
+        "HX-Push-Url": new_url,
+        "HX-Replace-Url": new_url,
+    }
 
-    return template.TemplateResponse("transaction/index.html", context)
+    return template.TemplateResponse("transaction/index.html", context, headers=headers)
 
 
 @app.get("/transaction/table")
@@ -77,7 +82,12 @@ def transaction_table(
         "date_since": date_since,
         "date_until": date_until,
     }
-    headers = {"HX-Trigger": "tableUpdate"}
+    new_url = f"/transactions?date_since={date_since}&date_until={date_until}"
+    headers = {
+        "HX-Trigger": "tableUpdate",
+        "HX-Push-Url": new_url,
+        "HX-Replace-Url": new_url,
+    }
 
     return template.TemplateResponse(
         name="transaction/partial/table.html",

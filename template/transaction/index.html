@@ -8,7 +8,7 @@
 
 {% include 'transaction/partial/rowtotal.html' with context %}
 
-<div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML">
+<div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML" hx-include="#date_range">
   {% include 'transaction/partial/table.html' with context %}
 </div>
 {% endblock %}
