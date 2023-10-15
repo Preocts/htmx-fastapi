@@ -1,6 +1,9 @@
 {% extends "_shared_base.html" %}
 {% block content %}
 <h1>Transactions Example Page</h1>
+
+{% include 'transaction/partial/daterange.html' with context %}
+
 <div id="transaction_total" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/total" hx-include="#date_range">
   {% include 'transaction/partial/total.html' with context %}
 </div>

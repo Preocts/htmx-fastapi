@@ -23,6 +23,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 template = Jinja2Templates(directory="template")
 _filters.apply_filters(template)
 
+DEFAULT_TRANSACTION_RANGE = 90
+
 
 @app.get("/")
 def index(request: fastapi.Request) -> fastapi.Response:
@@ -37,7 +39,15 @@ def favicon() -> fastapi.Response:
 @app.get("/transactions")
 def transactions(request: fastapi.Request) -> fastapi.Response:
     """Page view for transactions."""
-    context = {"request": request}
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
+    default_range = DEFAULT_TRANSACTION_RANGE
+    date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
+    date_until = now.strftime("%Y-%m-%d")
+    context = {
+        "request": request,
+        "date_since": date_since,
+        "date_until": date_until,
+    }
 
     return template.TemplateResponse("transaction/index.html", context)
 
