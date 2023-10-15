@@ -26,6 +26,18 @@ _filters.apply_filters(template)
 DEFAULT_TRANSACTION_RANGE = 90
 
 
+def _get_valid_date(since: str | None, until: str | None) -> tuple[str, str]:
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
+    default = DEFAULT_TRANSACTION_RANGE
+    if not since:
+        since = (now - datetime.timedelta(days=default)).strftime("%Y-%m-%d")
+
+    if not until:
+        until = now.strftime("%Y-%m-%d")
+
+    return since, until
+
+
 @app.get("/")
 def index(request: fastapi.Request) -> fastapi.Response:
     return template.TemplateResponse("index.html", {"request": request})
@@ -37,12 +49,13 @@ def favicon() -> fastapi.Response:
 
 
 @app.get("/transactions")
-def transactions(request: fastapi.Request) -> fastapi.Response:
+def transactions(
+    request: fastapi.Request,
+    date_since: str | None = None,
+    date_until: str | None = None,
+) -> fastapi.Response:
     """Page view for transactions."""
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
-    default_range = DEFAULT_TRANSACTION_RANGE
-    date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
-    date_until = now.strftime("%Y-%m-%d")
+    date_since, date_until = _get_valid_date(date_since, date_until)
     context = {
         "request": request,
         "date_since": date_since,
@@ -62,7 +75,6 @@ def transaction_table(
     request: fastapi.Request,
     date_since: str | None = None,
     date_until: str | None = None,
-    default_range: int = 90,
 ) -> fastapi.Response:
     """
     Return partial HTML for transactions between `since` and `until`.
@@ -70,12 +82,7 @@ def transaction_table(
     if `since` is None, default 90 days ago
     if `until` is None, default now
     """
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
-    if not date_since:
-        date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
-
-    if not date_until:
-        date_until = now.strftime("%Y-%m-%d")
+    date_since, date_until = _get_valid_date(date_since, date_until)
     context = {
         "request": request,
         "transactions": transaction_store.get(date_since, date_until),
@@ -101,7 +108,6 @@ def amount_total(
     request: fastapi.Request,
     date_since: str | None = None,
     date_until: str | None = None,
-    default_range: int = 90,
 ) -> fastapi.Response:
     """
     Return partial HTML total amount between `since` and `until`.
@@ -109,12 +115,7 @@ def amount_total(
     if `since` is None, default 90 days ago
     if `until` is None, default now
     """
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
-    if not date_since:
-        date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
-
-    if not date_until:
-        date_until = now.strftime("%Y-%m-%d")
+    date_since, date_until = _get_valid_date(date_since, date_until)
     context = {
         "request": request,
         "total_amount": transaction_store.get_total(date_since, date_until),
@@ -128,7 +129,6 @@ def transaction_count(
     request: fastapi.Request,
     date_since: str | None = None,
     date_until: str | None = None,
-    default_range: int = 90,
 ) -> fastapi.Response:
     """
     Return partial HTML total number of transactions between `since` and `until`.
@@ -136,12 +136,7 @@ def transaction_count(
     if `since` is None, default 90 days ago
     if `until` is None, default now
     """
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
-    if not date_since:
-        date_since = (now - datetime.timedelta(days=default_range)).strftime("%Y-%m-%d")
-
-    if not date_until:
-        date_until = now.strftime("%Y-%m-%d")
+    date_since, date_until = _get_valid_date(date_since, date_until)
     context = {
         "request": request,
         "total_displayed": transaction_store.get_count(date_since, date_until),
