@@ -1,0 +1,17 @@
+<div>
+  <label for="date_time">Date:</label>
+  <input type="date" name="date_time" value="{{ transaction.date }}" />
+</div>
+<div>
+  <label for="description">Description:</label>
+  <input type="text" name="description" value="" />
+</div>
+<div>
+  <label for="amount">Amount:</label>
+  <input type="text" name="amount" value="" />
+</div>
+<div>
+  <button type="submit" hx-post="/transaction" hx-include="#addrow" hx-target="#addrow">
+    Save
+  </button>
+</div>
