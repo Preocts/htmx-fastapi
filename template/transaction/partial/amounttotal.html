@@ -1,3 +1,7 @@
 <div id="transaction_total" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/amounttotal" hx-include="#date_range">
-  <p>Total Amount: {{ total_amount | to_dollars }}</p>
+  {% if total_amount %}
+    <p>Total Amount: {{ total_amount | to_dollars }}</p>
+  {% else %}
+    <img src="static/img/three-dots.svg" width=50 />
+  {% endif %}
 </div>

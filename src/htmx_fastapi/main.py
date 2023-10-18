@@ -23,7 +23,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 template = Jinja2Templates(directory="template")
 _filters.apply_filters(template)
 
-DEFAULT_TRANSACTION_RANGE = 7
+DEFAULT_TRANSACTION_RANGE = 90
 
 
 def _get_valid_date(since: str | None, until: str | None) -> tuple[str, str]:
@@ -61,10 +61,6 @@ def transactions(
         "request": request,
         "date_since": date_since,
         "date_until": date_until,
-        "transactions": transaction_store.get(date_since, date_until),
-        "total_amount": transaction_store.get_total(date_since, date_until),
-        "total_displayed": transaction_store.get_count(date_since, date_until),
-        "total_count": transaction_store.get_count_all(),
         "transaction": empty_transaction,
     }
     new_url = f"/transactions?date_since={date_since}&date_until={date_until}"
