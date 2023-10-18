@@ -1,6 +1,7 @@
 {% extends "_shared_base.html" %}
 {% block content %}
 <h1>Transactions Example Page</h1>
+<a href="/">Home</a>
 
 {% include 'transaction/partial/daterange.html' with context %}
 
@@ -12,7 +13,14 @@
   {% include 'transaction/partial/newrow.html' with context %}
 </div>
 
-<div id="transaction_table" hx-get="transaction/table" hx-trigger="load" hx-swap="innerHTML" hx-include="#date_range">
+<div
+  id="transaction_table"
+  hx-get="transaction/table"
+  hx-trigger="tableUpdate from:body"
+  hx-swap="innerHTML"
+  hx-include="#date_range"
+>
   {% include 'transaction/partial/table.html' with context %}
 </div>
+
 {% endblock %}
