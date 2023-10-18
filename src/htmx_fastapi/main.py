@@ -56,10 +56,12 @@ def transactions(
 ) -> fastapi.Response:
     """Page view for transactions."""
     date_since, date_until = _get_valid_date(date_since, date_until)
+    empty_transaction = Transaction(0, 0, "", date_until)
     context = {
         "request": request,
         "date_since": date_since,
         "date_until": date_until,
+        "transaction": empty_transaction,
     }
     new_url = f"/transactions?date_since={date_since}&date_until={date_until}"
     headers = {
@@ -226,28 +228,36 @@ def delete_transaction(
     return fastapi.Response(status_code=200, headers=headers)
 
 
-# @app.post("/transaction")
-# def create_transaction(
-#     request: fastapi.Request,
-#     date_time: str,
-#     description: str,
-#     amount: int,
-# ) -> fastapi.Response:
-#     """
-#     Create a transaction.
-#     """
-#     try:
-#         timestamp = int(datetime.datetime.fromisoformat(date_time).timestamp())
-#     except ValueError:
-#         timestamp = int(datetime.datetime.now(tz=datetime.timezone.utc).timestamp())
+@app.post("/transaction")
+def create_transaction(
+    request: fastapi.Request,
+    date_time: Annotated[str, fastapi.Form()],
+    description: Annotated[str, fastapi.Form()],
+    amount: Annotated[str, fastapi.Form()],
+) -> fastapi.Response:
+    """
+    Create a transaction.
+    """
+    if not date_time:
+        date_time = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d")
 
-#     transaction = Transaction(0, amount, description, timestamp)
+    try:
+        _amount = int(decimal.Decimal(amount) * 100)
+    except ValueError:
+        _amount = 0
 
-#     transaction_store.add(transaction)
+    transaction = Transaction(0, _amount, description, date_time)
 
-#     context = {
-#         "request": request,
-#         "transaction": transaction,
-#     }
+    transaction_store.add(transaction)
 
-#     return template.TemplateResponse("transaction/partial/row.html", context)
+    context = {
+        "request": request,
+        "transaction": transaction,
+    }
+    headers = {"HX-Trigger": "tableUpdate"}
+
+    return template.TemplateResponse(
+        name="transaction/partial/newrow.html",
+        context=context,
+        headers=headers,
+    )
