@@ -1,3 +1,7 @@
 <div id="transaction_count" hx-swap="innerHTML" hx-trigger="tableUpdate from:body" hx-get="transaction/rowtotal" hx-include="#date_range">
-  <p>Total rows displayed: {{ total_displayed }} of {{ total_count }}</p>
+  {% if total_displayed and total_count %}
+    <p>Total rows displayed: {{ total_displayed }} of {{ total_count }}</p>
+  {% else %}
+    <img src="static/img/three-dots.svg" width=50 />
+  {% endif %}
 </div>

@@ -22,5 +22,7 @@
 >
   {% include 'transaction/partial/table.html' with context %}
 </div>
-
+<span hx-get="transaction/table" hx-trigger="load" hx-target="#transaction_table" hx-include="#date_range"></span>
+<span hx-get="transaction/amounttotal" hx-trigger="load" hx-target="#transaction_total" hx-include="#date_range"></span>
+<span hx-get="transaction/rowtotal" hx-trigger="load" hx-target="#transaction_count" hx-include="#date_range"></span>
 {% endblock %}
