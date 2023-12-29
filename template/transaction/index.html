@@ -1,30 +1,49 @@
+{% import 'transaction/partial/daterange.html' as daterange %}
+
 {% extends "_shared_base.html" %}
 {% block title %}Transactions{% endblock %}
 {% block content %}
-<div class="span12">
-  <h1>Transactions Example Page</h1>
+<div class="grid-lg">
+  <div class="span12">
+    <h1>Transactions Example Page</h1>
+  </div>
+</div>
 
-  {% include 'transaction/partial/daterange.html' with context %}
+<div id="date_range" class="grid-lg">
+  <div class="span2">
+    {{ daterange.date_select('Start Date', 'date_since', date_since) }}
+  </div>
+  <div></div>
+  <div class="span2">
+    {{ daterange.date_select('End Date', 'date_until', date_until) }}
+  </div>
+  <div class="span7"></div>
+</div>
 
-  {% include 'transaction/partial/amounttotal.html' with context %}
-
-  {% include 'transaction/partial/rowtotal.html' with context %}
-
-  <div id="addrow" hx-swap="innerHTML">
-    {% include 'transaction/partial/newrow.html' with context %}
+<div class="grid-lg">
+  <div class="span3">
+    {% include 'transaction/partial/amounttotal.html' with context %}
   </div>
 
-  <div
-    id="transaction_table"
-    hx-get="transaction/table"
-    hx-trigger="tableUpdate from:body"
-    hx-swap="innerHTML"
-    hx-include="#date_range"
-  >
-    {% include 'transaction/partial/table.html' with context %}
+  <div class="span12">
+    {% include 'transaction/partial/rowtotal.html' with context %}
+
+    <div id="addrow" hx-swap="innerHTML">
+      {% include 'transaction/partial/newrow.html' with context %}
+    </div>
+
+    <div
+      id="transaction_table"
+      hx-get="transaction/table"
+      hx-trigger="tableUpdate from:body"
+      hx-swap="innerHTML"
+      hx-include="#date_range"
+    >
+      {% include 'transaction/partial/table.html' with context %}
+    </div>
+    <span hx-get="transaction/table" hx-trigger="load" hx-target="#transaction_table" hx-include="#date_range"></span>
+    <span hx-get="transaction/amounttotal" hx-trigger="load" hx-target="#transaction_total" hx-include="#date_range"></span>
+    <span hx-get="transaction/rowtotal" hx-trigger="load" hx-target="#transaction_count" hx-include="#date_range"></span>
+    {% endblock %}
   </div>
-  <span hx-get="transaction/table" hx-trigger="load" hx-target="#transaction_table" hx-include="#date_range"></span>
-  <span hx-get="transaction/amounttotal" hx-trigger="load" hx-target="#transaction_total" hx-include="#date_range"></span>
-  <span hx-get="transaction/rowtotal" hx-trigger="load" hx-target="#transaction_count" hx-include="#date_range"></span>
-  {% endblock %}
 </div>

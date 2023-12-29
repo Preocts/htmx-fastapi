@@ -1,22 +1,13 @@
-<div id="date_range">
-  <label for="date_since">Since</label>
+{% macro date_select(label, name, value) -%}
+  <label for="{{ name }}">{{ label }}</label>
   <input
     type="date"
-    name="date_since"
-    value="{{ date_since }}"
+    id="{{ name }}"
+    name="{{ name }}"
+    value="{{ value }}"
     hx-get="/transaction/table"
     hx-target="#transaction_table"
     hx-trigger="change"
-    hx-include="closest div"
+    hx-include="#date_range"
   />
-  <label for="date_until">Until</label>
-  <input
-    type="date"
-    name="date_until"
-    value="{{ date_until }}"
-    hx-get="/transaction/table"
-    hx-target="#transaction_table"
-    hx-trigger="change"
-    hx-include="closest div"
-  />
-</div>
+{%- endmacro %}
