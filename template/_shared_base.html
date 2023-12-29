@@ -4,10 +4,18 @@
     <meta charset="UTF-8" />
     <title>{% block title %}Some cool title{% endblock%}</title>
     <link rel="stylesheet" href="static/css/base.css" />
-    {% block xtra_css %}{% endblock %}
+    <link rel="stylesheet" href="static/css/grid.css" />
+    {% block extra_css %}{% endblock %}
   </head>
   <script src="static/js/htmx.min.js"></script>
   <body>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div class="grid-base">
+      <div class="span2 solid-border"><a href="/">title bar</a></div>
+      <div class="solid-border">menu bar</div>
+      <div>
+        <div id="content" class="solid-border">{% block content %}{% endblock %}</div>
+      </div>
+      <div class="span2 solid-border">footer bar</div>
+    </div>
   </body>
 </html>
