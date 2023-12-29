@@ -1,5 +1,6 @@
 # Project files
 *.db
+node_modules/
 
 # Standard ignore files
 temp_*
