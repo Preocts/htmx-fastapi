@@ -1,4 +1,5 @@
 """Custom Jinja2 filters."""
+
 from __future__ import annotations
 
 from fastapi.templating import Jinja2Templates
