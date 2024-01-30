@@ -1,4 +1,5 @@
 """Generate mock data for render testing."""
+
 from __future__ import annotations
 
 import datetime
