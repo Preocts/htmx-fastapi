@@ -1,4 +1,5 @@
 """SQLLite3 database interface for the Transaction tables."""
+
 from __future__ import annotations
 
 import sqlite3
